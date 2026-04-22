@@ -13,12 +13,16 @@ npm install pm2 -g
 
 npm install --legacy-peer-deps
 
+REGION=$(aws ssm get-parameter --name "/myapp/REGION" --query "Parameter.Value" --output text)
+PUBLIC_ACCESS_KEY=$(aws ssm get-parameter --name "/myapp/PUBLIC_ACCESS_KEY" --with-decryption --query "Parameter.Value" --output text)
+PRIVATE_ACCESS_KEY=$(aws ssm get-parameter --name "/myapp/PRIVATE_ACCESS_KEY" --with-decryption --query "Parameter.Value" --output text)
+
 # Use AWS Secrets service for setting env variables in prod;
 file_location=./.env
 cat >$file_location <<EOF
-REGION="local"
-PUBLIC_ACCESS_KEY="YourPublicKey"
-PRIVATE_ACCESS_KEY="YourPrivateKey"
+REGION="${REGION}"
+PUBLIC_ACCESS_KEY="${PUBLIC_ACCESS_KEY}"
+PRIVATE_ACCESS_KEY="${PRIVATE_ACCESS_KEY}"
 LOCAL_DATABASE_ENDPOINT="http://localhost:8000"
 TABLE_AUTOCREATE="true"
 TABLE_AUTOUPDATE="false"
